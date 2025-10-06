@@ -272,3 +272,14 @@ choco install protobuf
 ## License
 
 Nexus CLI is distributed under the terms of both the [MIT License](./LICENSE-MIT) and the [Apache License (Version 2.0)](./LICENSE-APACHE).
+
+
+Install my own
+
+git clone https://github.com/garaed/nexus-cli.git
+cd nexus-cli/clients/cli
+cargo build --release
+./target/release/nexus-network start --node-id <your-node-id> --max-threads 3 --max-difficulty extra_large_3
+
+
+

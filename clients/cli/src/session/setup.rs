@@ -34,20 +34,20 @@ pub struct SessionData {
 /// Clamp thread count based on available system memory
 /// Returns the maximum number of threads that can be safely used given system memory
 fn clamp_threads_by_memory(requested_threads: usize) -> usize {
-    let mut sysinfo = System::new();
-    sysinfo.refresh_memory();
+    // Всегда считаем, что у системы 16 ГБ памяти
+    let total_system_memory: u64 = 16_u64 * 1024 * 1024 * 1024; // 16 ГБ в байтах
 
-    let total_system_memory = sysinfo.total_memory();
+    // Память на поток (~1.1 ГБ)
     let memory_per_thread = crate::consts::cli_consts::PROJECTED_MEMORY_REQUIREMENT;
 
-    // Calculate max threads based on total system memory
-    // Reserve 25% of system memory for OS and other processes
+    // Доступная память для потоков (75% от всего объёма)
     let available_memory = (total_system_memory as f64 * 0.75) as u64;
+
+    // Максимальное количество потоков по памяти
     let max_threads_by_memory = (available_memory / memory_per_thread) as usize;
 
-    // Return the minimum of requested threads and memory-limited threads
-    // Always allow at least 1 thread
-    requested_threads.min(max_threads_by_memory.max(1))
+    // Ограничиваем число потоков запрашиваемым значением, лимитом по памяти и максимум 3 потока
+    requested_threads.min(max_threads_by_memory.max(1)).min(3)
 }
 
 /// Warn the user if their available memory seems insufficient for the task(s) at hand

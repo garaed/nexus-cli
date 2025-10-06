@@ -276,10 +276,11 @@ Nexus CLI is distributed under the terms of both the [MIT License](./LICENSE-MIT
 
 Install my own
 
+```bash
 git clone https://github.com/garaed/nexus-cli.git
 cd nexus-cli/clients/cli
 cargo build --release
 ./target/release/nexus-network start --node-id <your-node-id> --max-threads 3 --max-difficulty extra_large_3
-
+```
 
 
